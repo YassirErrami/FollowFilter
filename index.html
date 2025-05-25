@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <head>
+    <title>Not Following Back Checker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #232526, #414345 80%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', Arial, sans-serif;
+            color: #F8F8F8;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .container {
+            margin-top: 60px;
+            background: rgba(40, 45, 50, 0.85);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.27);
+            border-radius: 24px;
+            padding: 40px 32px 32px 32px;
+            backdrop-filter: blur(10px);
+            border: 1.5px solid rgba(255,255,255,0.08);
+            max-width: 430px;
+            width: 90vw;
+            animation: fadeIn 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px);}
+            to   { opacity: 1; transform: translateY(0);}
+        }
+        h1 {
+            font-size: 2.2rem;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            text-align: center;
+            font-weight: 700;
+            color: #90caf9;
+            text-shadow: 0 2px 12px #1115;
+        }
+        label {
+            color: #fbc02d;
+            font-size: 1.08rem;
+            margin-bottom: 0.6rem;
+            display: block;
+            font-weight: 500;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-bottom: 16px;
+        }
+        input[type="file"] {
+            background: rgba(60, 60, 60, 0.6);
+            color: #e3f2fd;
+            border: none;
+            padding: 8px 0;
+            font-size: 1rem;
+            border-radius: 8px;
+            transition: background 0.18s;
+        }
+        input[type="file"]:hover {
+            background: rgba(120, 120, 120, 0.18);
+        }
+        button {
+            background: linear-gradient(90deg, #1976d2 10%, #64b5f6 90%);
+            color: #fffde7;
+            border: none;
+            border-radius: 12px;
+            padding: 0.8rem 0;
+            font-size: 1.13rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-top: 10px;
+            cursor: pointer;
+            box-shadow: 0 2px 12px #1976d253;
+            transition: background 0.19s, color 0.19s, transform 0.12s;
+        }
+        button:hover {
+            background: linear-gradient(90deg, #42a5f5 20%, #1976d2 80%);
+            color: #fff9c4;
+            transform: translateY(-2px) scale(1.035);
+        }
+        h2 {
+            margin-top: 25px;
+            margin-bottom: 15px;
+            color: #fbc02d;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 auto;
+            max-width: 340px;
+        }
+        li {
+            background: rgba(60, 62, 70, 0.89);
+            color: #e3f2fd;
+            border-bottom: 1px solid #37474f55;
+            border-radius: 9px;
+            margin-bottom: 7px;
+            padding: 0.75rem 1.2rem;
+            font-size: 1.09rem;
+            box-shadow: 0 1px 6px #1112;
+            animation: fadeList 0.5s;
+            word-break: break-all;
+        }
+        @keyframes fadeList {
+            from { opacity: 0; transform: translateX(-30px);}
+            to   { opacity: 1; transform: translateX(0);}
+        }
+        p[style*="color:red"] {
+            color: #ff5252 !important;
+            font-weight: 600;
+            background: #19181b;
+            padding: 9px 0 8px 14px;
+            border-radius: 7px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #ff5252;
+            box-shadow: 0 1px 6px #0001;
+        }
+        .success-message {
+            color: #90ee90;
+            background: #1b3223cc;
+            border-radius: 6px;
+            padding: 8px 0 8px 14px;
+            margin-bottom: 0.9rem;
+            border-left: 4px solid #62e576;
+            box-shadow: 0 1px 6px #0001;
+            font-weight: 600;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 18px 6vw 18px 6vw;
+            }
+            h1 {
+                font-size: 1.19rem;
+            }
+            ul, li {
+                font-size: 0.97rem;
+            }
+        }
+    </style>
+</head>
+
+
+</head>
+<body>
+   <body>
+    <div class="container">
+        <h1>Not Following Back Checker</h1>
+        {% if error %}
+            <p style="color:red;">Error: {{ error }}</p>
+        {% endif %}
+        <form method="post" enctype="multipart/form-data">
+            <label>Upload following.txt or following.pdf:</label>
+            <input type="file" name="following" required>
+            <label>Upload followers.txt or followers.pdf:</label>
+            <input type="file" name="followers" required>
+            <button type="submit">Check</button>
+        </form>
+        {% if not_following_back is defined %}
+            <h2>These users don't follow you back:</h2>
+            {% if not_following_back %}
+                <ul>
+                {% for user in not_following_back %}
+                    <li>{{ user }}</li>
+                {% endfor %}
+                </ul>
+            {% else %}
+                <div class="success-message">Everyone you follow follows you back! 🎉</div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+
+
+</body>
+</html>
